@@ -266,6 +266,34 @@ namespace TerribleRpgGame
                     }
                 }
 
+                if(tur >= 89 && tur < 125)
+                {
+                    int randomevent1 = rng.Next(100);
+                    if(randomevent1 == 54)
+                    {
+                        MessageBox.Show("yerde yangın söndürücü buldun!");
+                        yangın++;
+                    }
+                }
+
+                if(tur >= 30 && tur < 74)
+                {
+                    int randomevent2 = rng.Next(100);
+                    if(randomevent2 == 5 || randomevent2 == 18)
+                    {
+                        if(zırh > 0)
+                        {
+                            MessageBox.Show("Çiviye Bastın!");
+                            zırh--;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Yerde çivi gördün ve satmaya karar verdin 5 altın kazandın!");
+                            para += 5;
+                        }
+                    }
+                }
+
 
                 sayac = tur;
             }
@@ -291,7 +319,7 @@ namespace TerribleRpgGame
                     para += 25;
                     denpuan = 0;
                 }
-                else if (denpuan >= 72 && seviye == 4)
+                else if (denpuan >= 66 && seviye == 4)
                 {
                     seviye++;
                     yangın++;
@@ -299,7 +327,7 @@ namespace TerribleRpgGame
                     para += 35;
                     denpuan = 0;
                 }
-                else if (denpuan >= 96 && seviye == 5)
+                else if (denpuan >= 84 && seviye == 5)
                 {
                     seviye++;
                     yangın += 2;
@@ -307,7 +335,7 @@ namespace TerribleRpgGame
                     para += 50;
                     denpuan = 0;
                 }
-                else if (denpuan >= 108 && seviye == 6)
+                else if (denpuan >= 102 && seviye == 6)
                 {
                     seviye++;
                     yangınfiat -= 10;
