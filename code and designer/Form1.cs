@@ -19,7 +19,9 @@ namespace TerribleRpgGame
         public int yukseklik = 0;
         public int sayac = 0;
         public int yangınfiat = 40;
+        public int kolafiat = 10;
         public int zırhfiat = 50;
+        public int killcount = 0;
         int c = 0;
         int d = 0;
         int k = 0;
@@ -28,6 +30,7 @@ namespace TerribleRpgGame
         int ne3 = 0;
         public int yangın = 2;
         public int zırh = 2;
+        public int kola = 1;
         public double para = 0;
         public int yan = 0;
         int[,] grid = {
@@ -50,6 +53,7 @@ namespace TerribleRpgGame
 
             seviyetxt.Text = seviye.ToString();
             turtxt.Text = tur.ToString();
+            killcounttxt.Text = killcount.ToString();
             zaman.Start();
             sayac = tur;
 
@@ -71,12 +75,12 @@ namespace TerribleRpgGame
                         {
                             if (grid[a + 1, b] == 2)
                             {
-                                if(zırh == 0)
+                                if (zırh == 0)
                                 {
                                     MessageBox.Show("Öldün Tekrar dene!");
                                     Application.Restart();
                                 }
-                                else if(zırh > 0)
+                                else if (zırh > 0)
                                 {
                                     zırh--;
                                     grid[a, b] = 0;
@@ -103,7 +107,7 @@ namespace TerribleRpgGame
                                 }
                             }
 
-                            else if(grid[a + 1, b] == 4)
+                            else if (grid[a + 1, b] == 4)
                             {
                                 para += 10;
                                 grid[a, b] = 0;
@@ -149,12 +153,12 @@ namespace TerribleRpgGame
                         {
                             if (grid[u - 1, y] == 2)
                             {
-                                if(zırh == 0)
+                                if (zırh == 0)
                                 {
                                     MessageBox.Show("Öldün tekrar dene!");
                                     Application.Restart();
                                 }
-                                else if(zırh > 0)
+                                else if (zırh > 0)
                                 {
                                     zırh--;
                                     grid[u, y] = 0;
@@ -181,7 +185,7 @@ namespace TerribleRpgGame
                                 }
                             }
 
-                            else if(grid[u - 1, y] == 3)
+                            else if (grid[u - 1, y] == 3)
                             {
                                 para += 10;
                                 grid[u, y] = 0;
@@ -220,9 +224,12 @@ namespace TerribleRpgGame
             paratxt.Text = para.ToString();
             seviyetxt.Text = seviye.ToString();
             yangıntxt.Text = yangın.ToString();
+            kolatxt.Text = kola.ToString();
+            kolafiyattxt.Text = kolafiat.ToString();
             zırhtxt.Text = zırh.ToString();
             zırhfiyattxt.Text = zırhfiat.ToString();
             ysfiyattxt.Text = yangınfiat.ToString();
+            killcounttxt.Text = killcount.ToString();
             if (sayac != tur)
             {
                 int dene = rng.Next(3);
@@ -252,36 +259,36 @@ namespace TerribleRpgGame
                     }
                 }
 
-                if(tur >= 12 && tur < 81)
+                if (tur >= 12 && tur < 81)
                 {
                     int enerjidene = rng.Next(6);
-                    if(enerjidene == 4)
+                    if (enerjidene == 4)
                     {
                         int satır3 = rng.Next(4);
                         int sutun3 = rng.Next(3);
                         if (grid[satır3, sutun3] == 0)
                         {
-                            grid[satır3 , sutun3] = 4;
+                            grid[satır3, sutun3] = 4;
                         }
                     }
                 }
 
-                if(tur >= 89 && tur < 125)
+                if (tur >= 89 && tur < 125)
                 {
                     int randomevent1 = rng.Next(100);
-                    if(randomevent1 == 54)
+                    if (randomevent1 == 54)
                     {
                         MessageBox.Show("yerde yangın söndürücü buldun!");
                         yangın++;
                     }
                 }
 
-                if(tur >= 30 && tur < 74)
+                if (tur >= 30 && tur < 74)
                 {
                     int randomevent2 = rng.Next(100);
-                    if(randomevent2 == 5 || randomevent2 == 18)
+                    if (randomevent2 == 5 || randomevent2 == 18)
                     {
-                        if(zırh > 0)
+                        if (zırh > 0)
                         {
                             MessageBox.Show("Çiviye Bastın!");
                             zırh--;
@@ -294,16 +301,34 @@ namespace TerribleRpgGame
                     }
                 }
 
+                if (tur >= 200)
+                {
+                    int randomevent3 = rng.Next(50);
+                    if (randomevent3 == 6 || randomevent3 == 7)
+                    {
+                        yangın++;
+                        MessageBox.Show("Yangın söndürücü kiti buldun");
+                    }
+                    else if (randomevent3 == 1)
+                    {
+                        if (yangın > 1)
+                        {
+                            yangın--;
+                            MessageBox.Show("Sahip olduğun yangın söndürücülerden biri bozuldu");
+                        }
+                    }
+                }
+
 
                 sayac = tur;
             }
 
-            if(seviye > 0)
+            if (seviye > 0)
             {
                 if (denpuan >= 18 && seviye == 1)
                 {
                     seviye++;
-                    para += 12;
+                    para += 16;
                     denpuan = 0;
                 }
                 else if (denpuan >= 42 && seviye == 2)
@@ -316,7 +341,7 @@ namespace TerribleRpgGame
                 {
                     seviye++;
                     yangın++;
-                    para += 25;
+                    para += 30;
                     denpuan = 0;
                 }
                 else if (denpuan >= 66 && seviye == 4)
@@ -331,7 +356,7 @@ namespace TerribleRpgGame
                 {
                     seviye++;
                     yangın += 2;
-                    zırh++;
+                    zırh += 2;
                     para += 50;
                     denpuan = 0;
                 }
@@ -651,12 +676,12 @@ namespace TerribleRpgGame
                         {
                             if (grid[u, y - 1] == 2)
                             {
-                                if(zırh == 0)
+                                if (zırh == 0)
                                 {
                                     MessageBox.Show("Öldün tekrar dene!");
                                     Application.Restart();
                                 }
-                                else if(zırh > 0)
+                                else if (zırh > 0)
                                 {
                                     zırh--;
                                     grid[u, y] = 0;
@@ -683,7 +708,7 @@ namespace TerribleRpgGame
                                 }
                             }
 
-                            else if(grid[u, y - 1] == 4)
+                            else if (grid[u, y - 1] == 4)
                             {
                                 para += 10;
                                 grid[u, y] = 0;
@@ -729,12 +754,12 @@ namespace TerribleRpgGame
                         {
                             if (grid[u, y + 1] == 2)
                             {
-                                if(zırh == 0)
+                                if (zırh == 0)
                                 {
                                     MessageBox.Show("Öldün tekrar dene!");
                                     Application.Restart();
                                 }
-                                else if(zırh > 0)
+                                else if (zırh > 0)
                                 {
                                     zırh--;
                                     grid[u, y] = 0;
@@ -761,7 +786,7 @@ namespace TerribleRpgGame
                                 }
                             }
 
-                            else if(grid[u, y + 1] == 4)
+                            else if (grid[u, y + 1] == 4)
                             {
                                 para += 10;
                                 grid[u, y] = 0;
@@ -806,14 +831,15 @@ namespace TerribleRpgGame
                         {
                             if (grid[la, le] == 1)
                             {
-                                if(grid[la+1, le] == 2){
+                                if (grid[la + 1, le] == 2)
+                                {
                                     grid[la + 1, le] = 0;
                                     re = 1;
                                     para += 2;
                                     denpuan += 6;
                                     enerji--;
                                 }
-                                else if(grid[la + 1, le] == 3)
+                                else if (grid[la + 1, le] == 3)
                                 {
                                     grid[la + 1, le] = 0;
                                     re = 1;
@@ -891,26 +917,26 @@ namespace TerribleRpgGame
                 {
                     for (ne2 = 0; ne2 < 3; ne2++)
                     {
-                        if (grid[ne1,ne2] == 1)
+                        if (grid[ne1, ne2] == 1)
                         {
-                            if(ne1+1 > 3 && ne2+1 > 2)
+                            if (ne1 + 1 > 3 && ne2 + 1 > 2)
                             {
                                 grid[ne1 - 1, ne2] = 0;
                                 grid[ne1, ne2 - 1] = 0;
                             }
-                            else if(ne1-1 < 0 &&  ne2-1 < 0)
+                            else if (ne1 - 1 < 0 && ne2 - 1 < 0)
                             {
                                 grid[ne1 + 1, ne2] = 0;
                                 grid[ne1, ne2 + 1] = 0;
                             }
-                            else if(ne1-1 < 0 && ne2+1 > 2)
+                            else if (ne1 - 1 < 0 && ne2 + 1 > 2)
                             {
                                 grid[ne1 + 1, ne2] = 0;
                                 grid[ne1, ne2 - 1] = 0;
                             }
                             else if (ne2 - 1 < 0)
                             {
-                                if(ne1+1 > 3)
+                                if (ne1 + 1 > 3)
                                 {
                                     grid[ne1 - 1, ne2] = 0;
                                     grid[ne1, ne2 + 1] = 0;
@@ -928,18 +954,18 @@ namespace TerribleRpgGame
                                 grid[ne1 + 1, ne2] = 0;
                                 grid[ne1, ne2 - 1] = 0;
                             }
-                            else if(ne1+1>3 && ne2+1 > 2)
+                            else if (ne1 + 1 > 3 && ne2 + 1 > 2)
                             {
                                 grid[ne1 - 1, ne2] = 0;
                                 grid[ne1, ne2 - 1] = 0;
                             }
-                            else if(ne1-1 < 0)
+                            else if (ne1 - 1 < 0)
                             {
                                 grid[ne1 + 1, ne2] = 0;
                                 grid[ne1, ne2 - 1] = 0;
                                 grid[ne1, ne2 + 1] = 0;
                             }
-                            else if(ne1+1 > 3)
+                            else if (ne1 + 1 > 3)
                             {
                                 grid[ne1 - 1, ne2] = 0;
                                 grid[ne1, ne2 - 1] = 0;
@@ -954,12 +980,12 @@ namespace TerribleRpgGame
                             }
                             ne3 = 1;
                         }
-                        if(ne3 == 1)
+                        if (ne3 == 1)
                         {
                             break;
                         }
                     }
-                    if(ne3 == 1)
+                    if (ne3 == 1)
                     {
                         break;
                     }
@@ -972,7 +998,50 @@ namespace TerribleRpgGame
             }
 
         }
+
+        private void kolaal_Click(object sender, EventArgs e)
+        {
+            if (para >= kolafiat)
+            {
+                kola++;
+                para -= kolafiat;
+            }
+            else
+            {
+                MessageBox.Show("O kadar paran yok!");
+            }
+        }
+
+        private void kolaicbut_Click(object sender, EventArgs e)
+        {
+            if (enerji != 4)
+            {
+                if (kola > 0)
+                {
+                    kola--;
+                    enerji++;
+                    int randomkola = rng.Next(10);
+                    if (randomkola == 3)
+                    {
+                        denpuan += 5;
+                    }
+                }
+                else if (kola == 0)
+                {
+                    MessageBox.Show("Kolan yok");
+                }
+            }
+            else if (enerji == 4)
+            {
+                if (kola > 0)
+                {
+                    MessageBox.Show("Enerjin tam");
+                }
+                else if (kola == 0)
+                {
+                    MessageBox.Show("Enerjin tam ve kolan yok!");
+                }
+            }
+        }
     }
 }
-
-
