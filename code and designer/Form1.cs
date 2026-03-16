@@ -22,6 +22,9 @@ namespace TerribleRpgGame
         public int kolafiat = 10;
         public int zırhfiat = 50;
         public int killcount = 0;
+        public int bossspawn = 0;
+        public int bossphase = 1;
+        public int bossshielddown = 1;
         int c = 0;
         int d = 0;
         int k = 0;
@@ -115,6 +118,45 @@ namespace TerribleRpgGame
                                 c = 1;
                             }
 
+                            else if (grid[a + 1, b] == 6)
+                            {
+                                if (zırh <= 1)
+                                {
+                                    MessageBox.Show("Öldün Tekrar dene!");
+                                    Application.Restart();
+                                }
+                                else if (zırh > 1)
+                                {
+                                    grid[a, b] = 0;
+                                    grid[a + 1, b] = 1;
+                                    c = 1;
+                                    zırh -= 2;
+                                }
+                            }
+
+                            else if (grid[a + 1, b] == 5)
+                            {
+                                if (bossphase == 1)
+                                {
+                                    MessageBox.Show("Öldün Tekrar dene!");
+                                    Application.Restart();
+                                }
+                                else if (bossphase == 2)
+                                {
+                                    if (zırh >= 3)
+                                    {
+                                        MessageBox.Show("You cannot destroy the boss with collision");
+                                        zırh -= 3;
+                                        c = 1;
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("Öldün Tekrar dene!");
+                                        Application.Restart();
+                                    }
+                                }
+                            }
+
                             else
                             {
                                 grid[a, b] = 0;
@@ -185,7 +227,46 @@ namespace TerribleRpgGame
                                 }
                             }
 
-                            else if (grid[u - 1, y] == 3)
+                            else if (grid[u - 1, y] == 6)
+                            {
+                                if (zırh <= 1)
+                                {
+                                    MessageBox.Show("Öldün tekrar dene!");
+                                    Application.Restart();
+                                }
+                                else if (zırh > 1)
+                                {
+                                    zırh -= 2;
+                                    grid[u, y] = 0;
+                                    grid[u - 1, y] = 1;
+                                    d = 1;
+                                }
+                            }
+
+                            else if (grid[u - 1, y] == 5)
+                            {
+                                if (bossphase == 1)
+                                {
+                                    MessageBox.Show("Öldün tekrar dene!");
+                                    Application.Restart();
+                                }
+                                else if (bossphase == 2)
+                                {
+                                    if (zırh >= 3)
+                                    {
+                                        zırh -= 3;
+                                        MessageBox.Show("You cannot destroy the boss with collision");
+                                        d = 1;
+                                    }
+                                    else if (zırh < 3)
+                                    {
+                                        MessageBox.Show("Öldün tekrar dene!");
+                                        Application.Restart();
+                                    }
+                                }
+                            }
+
+                            else if (grid[u - 1, y] == 4)
                             {
                                 para += 10;
                                 grid[u, y] = 0;
@@ -257,6 +338,154 @@ namespace TerribleRpgGame
                             grid[satır2, sutun2] = 3;
                         }
                     }
+                }
+
+                if (tur >= 5)
+                {
+                    if (bossspawn == 0)
+                    {
+                        if (grid[0, 0] == 0 && grid[0, 2] == 0 && grid[3, 0] == 0 && grid[3, 2] == 0 && grid[2, 1] == 0)
+                        {
+                            if (bossphase == 1)
+                            {
+                                zırh += 2;
+                                güçbut.Enabled = false;
+                                grid[2, 1] = 5;
+                                grid[0, 0] = 6;
+                                grid[0, 2] = 6;
+                                grid[3, 0] = 6;
+                                grid[3, 2] = 6;
+                                MessageBox.Show("Boss arrived! Knight of the apple hill to defeat him you should first destroy pink shields!!!");
+                            }
+
+                            if (bossphase == 2 && bossshielddown == 1)
+                            {
+                                grid[0, 0] = 6;
+                                grid[0, 2] = 6;
+                                bossshielddown = 0;
+                            }
+
+                        }
+                        if (grid[0, 0] == 0 && grid[0, 2] == 0 && grid[3, 0] == 0 && grid[3, 2] == 0 && grid[2, 1] == 5)
+                        {
+
+                            zırh++;
+                            if (bossphase == 2)
+                            {
+                                grid[0, 0] = 6;
+                                grid[0, 2] = 6;
+                            }
+                        }
+                        if (grid[0, 0] == 1 && grid[0, 2] == 0 && bossphase == 2 || grid[0, 0] == 0 && grid[0, 2] == 1 && bossphase == 2)
+                        {
+                            bossphase = 3;
+                            MessageBox.Show("All shields are down you can defeat him!!!");
+                        }
+
+                        else
+                        {
+                            if (grid[0, 0] != 0)
+                            {
+                                if (grid[0, 0] == 1)
+                                {
+                                    para++;
+                                }
+                                else if (grid[0, 0] == 2)
+                                {
+                                    grid[0, 0] = 0;
+                                }
+                                else if (grid[0, 0] == 3)
+                                {
+                                    grid[0, 0] = 0;
+                                }
+                                else if (grid[0, 0] == 4)
+                                {
+                                    grid[0, 0] = 0;
+                                }
+                            }
+
+                            if (grid[0, 2] != 0)
+                            {
+                                if (grid[0, 2] == 1)
+                                {
+                                    para++;
+                                }
+                                else if (grid[0, 2] == 2)
+                                {
+                                    grid[0, 2] = 0;
+                                }
+                                else if (grid[0, 2] == 3)
+                                {
+                                    grid[0, 2] = 0;
+                                }
+                                else if (grid[0, 2] == 4)
+                                {
+                                    grid[0, 2] = 0;
+                                }
+                            }
+
+                            if (grid[3, 0] != 0)
+                            {
+                                if (grid[3, 0] == 1)
+                                {
+                                    para++;
+                                }
+                                else if (grid[3, 0] == 2)
+                                {
+                                    grid[3, 0] = 0;
+                                }
+                                else if (grid[3, 0] == 3)
+                                {
+                                    grid[3, 0] = 0;
+                                }
+                                else if (grid[3, 0] == 4)
+                                {
+                                    grid[3, 0] = 0;
+                                }
+                            }
+
+                            if (grid[3, 2] != 0)
+                            {
+                                if (grid[3, 2] == 1)
+                                {
+                                    para++;
+                                }
+                                else if (grid[3, 2] == 2)
+                                {
+                                    grid[3, 2] = 0;
+                                }
+                                else if (grid[3, 2] == 3)
+                                {
+                                    grid[3, 2] = 0;
+                                }
+                                else if (grid[3, 2] == 4)
+                                {
+                                    grid[3, 2] = 0;
+                                }
+                            }
+
+                            if (grid[2, 1] != 0)
+                            {
+                                if (grid[2, 1] == 1)
+                                {
+                                    para++;
+                                }
+                                else if (grid[2, 1] == 2)
+                                {
+                                    grid[2, 1] = 0;
+                                }
+                                else if (grid[2, 1] == 3)
+                                {
+                                    grid[2, 1] = 0;
+                                }
+                                else if (grid[2, 1] == 4)
+                                {
+                                    grid[2, 1] = 0;
+                                }
+                            }
+                        }
+                    }
+
                 }
 
                 if (tur >= 12 && tur < 81)
@@ -659,6 +888,30 @@ namespace TerribleRpgGame
             {
                 g32.BackColor = Color.Orange;
             }
+
+            //boss spawn
+
+            if (grid[0, 0] == 6)
+            {
+                g00.BackColor = Color.DarkMagenta;
+            }
+            if (grid[0, 2] == 6)
+            {
+                g02.BackColor = Color.DarkMagenta;
+            }
+            if (grid[3, 0] == 6)
+            {
+                g30.BackColor = Color.DarkMagenta;
+            }
+            if (grid[3, 2] == 6)
+            {
+                g32.BackColor = Color.DarkMagenta;
+            }
+
+            if (grid[2, 1] == 5)
+            {
+                g21.BackColor = Color.DeepSkyBlue;
+            }
         }
 
         private void solbut_Click(object sender, EventArgs e)
@@ -714,6 +967,47 @@ namespace TerribleRpgGame
                                 grid[u, y] = 0;
                                 grid[u, y - 1] = 1;
                                 k = 1;
+                            }
+
+                            else if (grid[u, y - 1] == 6)
+                            {
+                                if (zırh <= 1)
+                                {
+                                    MessageBox.Show("Öldün tekrar dene!");
+                                    Application.Restart();
+                                }
+                                else if (zırh > 1)
+                                {
+                                    zırh -= 2;
+                                    grid[u, y] = 0;
+                                    grid[u, y - 1] = 1;
+                                    k = 1;
+                                }
+                            }
+
+                            else if (grid[u, y - 1] == 5)
+                            {
+                                if (bossphase == 1)
+                                {
+                                    MessageBox.Show("Öldün tekrar dene!");
+                                    Application.Restart();
+                                }
+
+                                else if (bossphase == 2)
+                                {
+                                    if (zırh >= 3)
+                                    {
+                                        zırh -= 3;
+                                        MessageBox.Show("You cannot destroy the boss with collision");
+                                        k = 1;
+
+                                    }
+                                    else if (zırh < 3)
+                                    {
+                                        MessageBox.Show("Öldün tekrar dene!");
+                                        Application.Restart();
+                                    }
+                                }
                             }
 
                             else
@@ -794,6 +1088,46 @@ namespace TerribleRpgGame
                                 r = 1;
                             }
 
+                            else if (grid[u, y + 1] == 6)
+                            {
+                                if (zırh <= 1)
+                                {
+                                    MessageBox.Show("Öldün tekrar dene!");
+                                    Application.Restart();
+                                }
+                                else if (zırh > 1)
+                                {
+                                    zırh -= 2;
+                                    grid[u, y] = 0;
+                                    grid[u, y + 1] = 1;
+                                    r = 1;
+                                }
+                            }
+
+                            else if (grid[u, y + 1] == 5)
+                            {
+                                if (bossphase == 1)
+                                {
+                                    MessageBox.Show("Öldün tekrar dene!");
+                                    Application.Restart();
+                                }
+                                else if (bossphase == 2)
+                                {
+                                    if (zırh <= 3)
+                                    {
+                                        MessageBox.Show("Öldün tekrar dene!");
+                                        Application.Restart();
+                                    }
+                                    else if (zırh > 3)
+                                    {
+                                        zırh -= 3;
+                                        MessageBox.Show("You cannot destroy the boss with collision");
+                                        r = 1;
+
+                                    }
+                                }
+                            }
+
                             else
                             {
                                 grid[u, y] = 0;
@@ -843,6 +1177,47 @@ namespace TerribleRpgGame
                                 {
                                     grid[la + 1, le] = 0;
                                     re = 1;
+                                }
+                                else if (grid[la + 1, le] == 6)
+                                {
+                                    grid[la + 1, le] = 0;
+                                    enerji--;
+                                    re = 1;
+                                }
+                                else if (grid[la + 1, le] == 5)
+                                {
+                                    if (bossphase == 1)
+                                    {
+                                        if (grid[0, 0] != 6 && grid[0, 2] != 6 && grid[3, 0] != 6 && grid[3, 2] != 6)
+                                        {
+                                            bossphase = 2;
+                                            para += 10;
+                                            MessageBox.Show("Second wave incoming!");
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("You cannot hit while the shields are on");
+                                        }
+                                    }
+                                    else if (bossphase == 3)
+                                    {
+                                        if (grid[0, 0] != 6 && grid[0, 2] != 6 && grid[3, 0] != 6 && grid[3, 2] != 6)
+                                        {
+                                            MessageBox.Show("Boss defeated!!");
+                                            grid[la + 1, le] = 0;
+                                            güçbut.Enabled = true;
+                                            para += 100;
+                                            denpuan += 50;
+                                            zırh += 3;
+                                            bossphase++;
+                                            bossspawn++;
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("You cannot hit while the shields are on");
+                                        }
+                                    }
+
                                 }
                                 else
                                 {
@@ -1045,3 +1420,5 @@ namespace TerribleRpgGame
         }
     }
 }
+
+
