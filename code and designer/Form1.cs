@@ -340,7 +340,7 @@ namespace TerribleRpgGame
                     }
                 }
 
-                if (tur >= 5)
+                if (tur >= 120)
                 {
                     if (bossspawn == 0)
                     {
